@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OptiSoft ERP</title>
+    <title>OptiSoft Enterprise | Distribution</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -11,9 +11,9 @@
 
     <style>
         :root {
-            --primary: #0f172a; /* Dark Slate */
-            --secondary: #3b82f6; /* Vivid Blue */
-            --accent: #0ea5e9; /* Light Blue */
+            --primary: #0f172a; 
+            --secondary: #3b82f6; 
+            --accent: #0ea5e9; 
             --bg: #f1f5f9;
             --surface: #ffffff;
             --text-main: #1e293b;
@@ -36,31 +36,20 @@
             padding: 20px;
             transition: 0.3s ease-in-out;
             z-index: 1000;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0; 
         }
 
-        /* Mobile State Classes (Default behavior for mobile) */
         aside.closed { margin-left: -260px; position: absolute; height: 100%; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
         aside.open { margin-left: 0; position: absolute; height: 100%; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
         
-        /* --- DESKTOP FIX (The Critical Part) --- */
         @media (min-width: 900px) {
-            aside { 
-                position: relative !important; 
-                margin-left: 0 !important; 
-                height: 100vh !important; 
-                box-shadow: none !important;
-            }
-            aside.closed, aside.open { 
-                position: relative !important; 
-                margin-left: 0 !important; 
-            }
+            aside { position: relative !important; margin-left: 0 !important; height: 100vh !important; box-shadow: none !important; }
+            aside.closed, aside.open { position: relative !important; margin-left: 0 !important; }
             .menu-toggle { display: none !important; }
             .sidebar-overlay { display: none !important; }
         }
 
         .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 12px; margin-bottom: 40px; color: white; }
-        .brand i { color: var(--secondary); }
         
         .nav-item {
             display: flex; align-items: center; gap: 12px; padding: 14px 16px; color: #94a3b8;
@@ -88,20 +77,13 @@
         .content-area { flex: 1; padding: 20px; overflow-y: auto; overflow-x: hidden; }
 
         /* --- GRIDS --- */
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-            gap: 20px; margin-bottom: 30px; 
-        }
-
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .dashboard-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         @media(max-width: 900px) { .dashboard-layout { grid-template-columns: 1fr; } }
 
         .card { background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .stat-card h4 { font-size: 13px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .stat-card .val { font-size: 24px; font-weight: 700; color: var(--text-main); }
-        .stat-card .trend { font-size: 12px; margin-top: 5px; display: flex; align-items: center; gap: 5px; }
-        .trend.up { color: var(--success); }
 
         /* TABLES */
         .table-container { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; }
@@ -109,26 +91,24 @@
         th { background: #f8fafc; text-align: left; padding: 15px 20px; font-size: 13px; color: var(--text-light); font-weight: 600; text-transform: uppercase; }
         td { padding: 15px 20px; border-top: 1px solid var(--border); color: var(--text-main); font-size: 14px; }
         tr:hover td { background: #f8fafc; }
-        
         .badge { padding: 4px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .badge-liq { background: #e0f2fe; color: #0284c7; }
         .badge-sol { background: #fef3c7; color: #d97706; }
 
-        /* POS / DISTRIBUTION LAYOUT */
+        /* POS LAYOUT */
         .pos-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; height: 100%; }
         @media(max-width: 900px) { 
             .pos-layout { grid-template-columns: 1fr; display: flex; flex-direction: column; height: auto; }
             .pos-products { height: 400px; overflow-y: auto; }
         }
-
         .pos-products { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 20px; }
         .pos-cart { background: white; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; }
         .cart-header { padding: 20px; border-bottom: 1px solid var(--border); background: #f8fafc; border-radius: 12px 12px 0 0; }
         .cart-items { flex: 1; overflow-y: auto; padding: 10px; min-height: 200px; }
         .cart-footer { padding: 20px; border-top: 1px solid var(--border); background: #f8fafc; border-radius: 0 0 12px 12px; }
         .cart-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; }
-        
-        /* Buttons & Forms */
+
+        /* FORMS */
         .btn { padding: 10px 18px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
         .btn-primary { background: var(--secondary); color: white; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
@@ -136,21 +116,22 @@
         .form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500; }
         .form-control { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
         
-        /* Modal & Overlays */
+        /* MODALS */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; backdrop-filter: blur(2px); }
         .modal { background: white; width: 100%; max-width: 500px; padding: 30px; border-radius: 12px; max-height: 90vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 900; display: none; }
         .sidebar-overlay.active { display: block; }
-
-        /* Toast */
-        .toast { position: fixed; bottom: 30px; right: 30px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 8px; display: flex; align-items: center; gap: 10px; transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 3000; }
-        .toast.show { transform: translateY(0); opacity: 1; }
         
         .hidden { display: none !important; }
         .flex { display: flex; gap: 10px; }
         .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; color: var(--text-main); }
+        
+        /* Toast */
+        .toast { position: fixed; bottom: 30px; right: 30px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 8px; display: flex; align-items: center; gap: 10px; transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 3000; }
+        .toast.show { transform: translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
@@ -209,7 +190,7 @@
                     <div class="card stat-card">
                         <h4>Total Revenue</h4>
                         <div class="val" id="d-revenue">LKR 0.00</div>
-                        <div class="trend up"><i class="fas fa-arrow-up"></i> Real-time</div>
+                        <div class="stat-card .trend up"><i class="fas fa-arrow-up"></i> Real-time</div>
                     </div>
                     <div class="card stat-card">
                         <h4>Stock Valuation</h4>
@@ -279,16 +260,7 @@
 
                     <div class="pos-cart">
                         <div class="cart-header">
-                            <h3>New Order</h3>
-                            
-                            <div style="margin-top: 15px;">
-                                <label style="font-size:12px; color:#64748b; font-weight:600;">DISTRIBUTOR / STORE</label>
-                                <input type="text" id="cart-client" class="form-control" placeholder="e.g. Kandy Agri Store" style="margin-bottom: 10px;">
-                                
-                                <label style="font-size:12px; color:#64748b; font-weight:600;">SALES REP NAME</label>
-                                <input type="text" id="cart-rep" class="form-control" placeholder="e.g. Kasun Perera">
-                            </div>
-
+                            <h3>Current Cart</h3>
                         </div>
                         <div class="cart-items" id="cart-items-container">
                             <div style="text-align: center; color: #94a3b8; margin-top: 50px;">Cart is Empty</div>
@@ -298,8 +270,8 @@
                                 <span>Total:</span>
                                 <span id="cart-total">LKR 0.00</span>
                             </div>
-                            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="processCheckout()">
-                                <i class="fas fa-check-circle"></i> Confirm Distribution
+                            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="openCheckoutModal()">
+                                <i class="fas fa-arrow-right"></i> Proceed to Distribution
                             </button>
                         </div>
                     </div>
@@ -372,6 +344,53 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="modal-checkout">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Distribution Details</h3>
+                <i class="fas fa-times" style="cursor: pointer;" onclick="closeModal('modal-checkout')"></i>
+            </div>
+            <form onsubmit="finalizeOrder(event)">
+                <div class="form-group">
+                    <label>Distributor / Receiver Name</label>
+                    <input type="text" id="c-name" class="form-control" required placeholder="e.g. Kandy Agri Store">
+                </div>
+                
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="c-address" class="form-control" required placeholder="e.g. 123 Main St, Kandy">
+                </div>
+
+                <div class="flex">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Phone Number</label>
+                        <input type="tel" id="c-phone" class="form-control" required placeholder="077-1234567">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Email (Optional)</label>
+                        <input type="email" id="c-email" class="form-control" placeholder="store@email.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Sales Person Name</label>
+                    <input type="text" id="c-rep" class="form-control" required placeholder="Who handled this?">
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; font-weight: 700;">
+                        <span>Final Total:</span>
+                        <span id="checkout-total-display">LKR 0.00</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-check"></i> Complete Distribution
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div id="toast" class="toast">
         <i class="fas fa-info-circle"></i>
         <span id="toast-msg">Action Successful</span>
@@ -392,7 +411,6 @@
             const sb = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             const isClosed = sb.classList.contains('closed');
-            
             if (isClosed) {
                 sb.classList.remove('closed');
                 sb.classList.add('open');
@@ -403,18 +421,14 @@
                 overlay.classList.remove('active');
             }
         }
-        
         function toggleSidebarMobileOnly() {
             if (window.innerWidth <= 900) toggleSidebar();
         }
-
         window.addEventListener('resize', () => {
             if(window.innerWidth > 900) {
-                // DESKTOP: Remove mobile classes so css grid takes over
                 document.getElementById('sidebar').classList.remove('closed');
                 document.getElementById('sidebar-overlay').classList.remove('active');
             } else {
-                // MOBILE: Add closed class if not present
                 if(!document.getElementById('sidebar').classList.contains('open')) {
                     document.getElementById('sidebar').classList.add('closed');
                 }
@@ -423,13 +437,7 @@
 
         // --- CORE FUNCTIONS ---
         function init() {
-            // FIX: Only add 'closed' class if we are actually on mobile
-            if(window.innerWidth <= 900) {
-                document.getElementById('sidebar').classList.add('closed');
-            } else {
-                document.getElementById('sidebar').classList.remove('closed');
-            }
-            
+            if(window.innerWidth <= 900) document.getElementById('sidebar').classList.add('closed');
             renderInventory();
             renderSalesHistory();
             updateDashboard();
@@ -466,7 +474,6 @@
         function renderInventory() {
             const tbody = document.getElementById('inv-body');
             tbody.innerHTML = '';
-            
             DB.inventory.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -495,7 +502,6 @@
         function renderPosGrid() {
             const grid = document.getElementById('pos-grid');
             grid.innerHTML = '';
-            
             DB.inventory.forEach(item => {
                 if(item.qty > 0) {
                     const card = document.createElement('div');
@@ -519,13 +525,9 @@
         function addToCart(id) {
             const item = DB.inventory.find(i => i.id === id);
             const existing = currentCart.find(i => i.id === id);
-            
             if(existing) {
-                if(existing.cartQty < item.qty) {
-                    existing.cartQty++;
-                } else {
-                    showToast('Max stock reached', 'error');
-                }
+                if(existing.cartQty < item.qty) existing.cartQty++;
+                else showToast('Max stock reached', 'error');
             } else {
                 currentCart.push({...item, cartQty: 1});
             }
@@ -536,7 +538,6 @@
             const container = document.getElementById('cart-items-container');
             container.innerHTML = '';
             let total = 0;
-
             currentCart.forEach((item, index) => {
                 total += item.price * item.cartQty;
                 container.innerHTML += `
@@ -552,10 +553,10 @@
                     </div>
                 `;
             });
-
             if(currentCart.length === 0) container.innerHTML = '<div style="text-align: center; color: #94a3b8; margin-top: 50px;">Cart is Empty</div>';
-            
-            document.getElementById('cart-total').innerText = 'LKR ' + total.toFixed(2);
+            const totalStr = 'LKR ' + total.toFixed(2);
+            document.getElementById('cart-total').innerText = totalStr;
+            document.getElementById('checkout-total-display').innerText = totalStr; // Update modal total too
         }
 
         function removeFromCart(index) {
@@ -563,23 +564,33 @@
             renderCart();
         }
 
-        function processCheckout() {
-            const client = document.getElementById('cart-client').value;
-            const rep = document.getElementById('cart-rep').value;
-            
+        // --- CHECKOUT LOGIC ---
+        function openCheckoutModal() {
             if(currentCart.length === 0) return showToast('Cart is empty', 'error');
-            if(!client) return showToast('Enter Distributor Name', 'error');
-            if(!rep) return showToast('Enter Sales Rep Name', 'error');
+            openModal('modal-checkout');
+        }
 
-            // 1. Calculate Total
+        function finalizeOrder(e) {
+            e.preventDefault();
+
+            // 1. Gather Details
+            const distributorDetails = {
+                name: document.getElementById('c-name').value,
+                address: document.getElementById('c-address').value,
+                phone: document.getElementById('c-phone').value,
+                email: document.getElementById('c-email').value,
+                rep: document.getElementById('c-rep').value
+            };
+
             const totalVal = currentCart.reduce((sum, item) => sum + (item.price * item.cartQty), 0);
 
             // 2. Create Sale Record
             const sale = {
                 id: 'INV-' + Date.now().toString().slice(-6),
                 date: new Date().toLocaleDateString(),
-                client: client,
-                salesPerson: rep,
+                client: distributorDetails.name,
+                salesPerson: distributorDetails.rep,
+                fullDetails: distributorDetails, // Store full details
                 items: currentCart,
                 total: totalVal
             };
@@ -590,31 +601,29 @@
                 if(invItem) invItem.qty -= cartItem.cartQty;
             });
 
+            // 4. Save & Clean Up
             DB.sales.unshift(sale); 
             saveDB();
             
-            // 4. Reset UI
             currentCart = [];
-            document.getElementById('cart-client').value = '';
-            document.getElementById('cart-rep').value = '';
+            e.target.reset(); // Reset Form
+            closeModal('modal-checkout');
             renderCart();
             renderInventory(); 
-            showToast('Distribution recorded!');
+            showToast('Distribution Recorded Successfully!');
+            renderSalesHistory();
         }
 
         // --- DASHBOARD & REPORTS ---
         function updateDashboard() {
-            // Calcs
             const totalRev = DB.sales.reduce((sum, s) => sum + s.total, 0);
             const stockVal = DB.inventory.reduce((sum, i) => sum + (i.price * i.qty), 0);
             
-            // DOM
             document.getElementById('d-revenue').innerText = 'LKR ' + totalRev.toLocaleString();
             document.getElementById('d-valuation').innerText = 'LKR ' + stockVal.toLocaleString();
             document.getElementById('d-products').innerText = DB.inventory.length;
             document.getElementById('d-clients').innerText = DB.sales.length;
 
-            // Low Stock
             const alerts = document.getElementById('alert-list');
             const lowItems = DB.inventory.filter(i => i.qty < 10);
             alerts.innerHTML = '';
@@ -625,7 +634,6 @@
                     alerts.innerHTML += `<div style="padding: 10px; background: #fff1f2; color: #be123c; border-radius: 6px; margin-bottom: 5px; font-weight:500;">Low Stock: ${i.name} (${i.qty} left)</div>`;
                 });
             }
-
             updateChart();
         }
 
@@ -665,7 +673,10 @@
                     <tr>
                         <td>${sale.id}</td>
                         <td>${sale.date}</td>
-                        <td>${sale.client}</td>
+                        <td>
+                            <div>${sale.client}</div>
+                            <div style="font-size:11px; color:#64748b;">${sale.fullDetails?.phone || ''}</div>
+                        </td>
                         <td>${sale.salesPerson || '-'}</td>
                         <td><strong>LKR ${sale.total.toFixed(2)}</strong></td>
                     </tr>
@@ -708,9 +719,7 @@
              });
         }
 
-        // Boot
         init();
-
     </script>
 </body>
 </html>

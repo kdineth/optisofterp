@@ -150,6 +150,9 @@
             <div class="nav-item" onclick="navTo('inventory', this); toggleSidebarMobileOnly()">
                 <i class="fas fa-boxes"></i> Inventory Stock
             </div>
+            <div class="nav-item" onclick="navTo('distributors', this); toggleSidebarMobileOnly()">
+                <i class="fas fa-users"></i> Distributors
+            </div>
             <div class="nav-item" onclick="navTo('sales', this); toggleSidebarMobileOnly()">
                 <i class="fas fa-cash-register"></i> Distribution (POS)
             </div>
@@ -204,9 +207,9 @@
                         <div class="trend"><i class="fas fa-check"></i> In Catalog</div>
                     </div>
                     <div class="card stat-card">
-                        <h4>Distributions</h4>
+                        <h4>Distributors</h4>
                         <div class="val" id="d-clients">0</div>
-                        <div class="trend"><i class="fas fa-truck"></i> Completed</div>
+                        <div class="trend"><i class="fas fa-users"></i> Registered</div>
                     </div>
                 </div>
 
@@ -227,7 +230,6 @@
                     <h2 class="page-title">Inventory Management</h2>
                     <button class="btn btn-primary" onclick="openModal('modal-add-item')"><i class="fas fa-plus"></i> Add Stock</button>
                 </div>
-
                 <div class="table-container">
                     <table id="inv-table">
                         <thead>
@@ -246,6 +248,28 @@
                 </div>
             </div>
 
+            <div id="distributors" class="view hidden">
+                <div class="page-header">
+                    <h2 class="page-title">Distributor Management</h2>
+                    <button class="btn btn-primary" onclick="openModal('modal-add-distributor')"><i class="fas fa-user-plus"></i> Add Distributor</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Distributor Name</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dist-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div id="sales" class="view hidden">
                 <div class="page-header">
                     <h2 class="page-title">Distribution Terminal</h2>
@@ -253,13 +277,6 @@
                 
                 <div class="pos-layout">
                     <div class="pos-products">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h4 style="margin:0;">Product Catalog</h4>
-                            <button class="btn btn-outline btn-sm" onclick="openModal('modal-add-distributor')">
-                                <i class="fas fa-user-plus"></i> Manage Distributors
-                            </button>
-                        </div>
-
                         <div class="form-group">
                             <input type="text" id="pos-search" class="form-control" placeholder="Search product..." onkeyup="filterPosItems()">
                         </div>
@@ -390,14 +407,9 @@
                 
                 <div class="form-group">
                     <label>Select Distributor</label>
-                    <div class="flex">
-                        <select id="c-distributor-select" class="form-control" required style="flex:1;">
-                            <option value="">-- Choose Distributor --</option>
-                            </select>
-                        <button type="button" class="btn btn-outline" onclick="openModal('modal-add-distributor')">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
+                    <select id="c-distributor-select" class="form-control" required>
+                        <option value="">-- Choose Distributor --</option>
+                        </select>
                 </div>
 
                 <div class="form-group">
@@ -468,6 +480,7 @@
         function init() {
             if(window.innerWidth <= 900) document.getElementById('sidebar').classList.add('closed');
             renderInventory();
+            renderDistributorsList(); // New Function
             renderSalesHistory();
             updateDashboard();
             renderPosGrid();
@@ -493,14 +506,44 @@
             };
             DB.distributors.push(newDist);
             saveDB();
+            
             closeModal('modal-add-distributor');
             e.target.reset();
             showToast('Distributor Registered!');
             
-            // If checkout modal is open, refresh the list
-            renderDistributorSelect(); 
+            renderDistributorsList(); // Update the separate tab
         }
 
+        function renderDistributorsList() {
+            const tbody = document.getElementById('dist-body');
+            tbody.innerHTML = '';
+            DB.distributors.forEach(d => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${d.name}</strong></td>
+                    <td>${d.phone}</td>
+                    <td>${d.address}</td>
+                    <td>${d.email || '-'}</td>
+                    <td>
+                        <button class="btn-outline btn-sm" onclick="deleteDistributor(${d.id})" style="color:var(--danger); border-color:var(--danger)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteDistributor(id) {
+            if(confirm('Remove this distributor?')) {
+                DB.distributors = DB.distributors.filter(d => d.id !== id);
+                saveDB();
+                renderDistributorsList();
+                showToast('Distributor removed');
+            }
+        }
+
+        // Used by the POS Checkout Modal
         function renderDistributorSelect() {
             const select = document.getElementById('c-distributor-select');
             select.innerHTML = '<option value="">-- Choose Distributor --</option>';
@@ -681,7 +724,7 @@
             document.getElementById('d-revenue').innerText = 'LKR ' + totalRev.toLocaleString();
             document.getElementById('d-valuation').innerText = 'LKR ' + stockVal.toLocaleString();
             document.getElementById('d-products').innerText = DB.inventory.length;
-            document.getElementById('d-clients').innerText = DB.sales.length;
+            document.getElementById('d-clients').innerText = DB.distributors.length; // Shows Registered Count
 
             const alerts = document.getElementById('alert-list');
             const lowItems = DB.inventory.filter(i => i.qty < 10);
